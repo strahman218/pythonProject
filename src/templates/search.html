@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>Search</h3>
+
+    {% if error_messages %}
+        {% for message in error_messages %}
+            <strong>{{ message }}</strong><br>
+        {% endfor %}
+    {% endif %}
+    <form action="/getLocations" method="POST">
+        Origin: {{ location1 }}<input type="text" name="location1"><br>
+        Destination: {{ location2 }}<input type="text" name="location2"><br>
+        Speed: <input type="text" name="speed" placeholder="3.5"> miles/hour<br>
+
+        <input type="submit" value="Calculate Distance"><br>
+    </form>
+
+    <div>
+        {% if results %}
+            <h3>{{ results.location1 }} to {{ results.location2 }}</h3>
+            <br>
+
+        <span>Distance: <strong>{{ results.distance }}</strong> miles</span><br>
+            <span>It would take you
+                <strong>{{ results.hour }} hours</strong> and
+                <strong>{{ results.minutes }} minutes</strong>
+                at <strong>{{ speed }} mph</strong>
+            </span>
+        {% endif %}
+    </div>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var origin = {lat: 47.606, lng: -122.332};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: origin
+        });
+        var marker = new google.maps.Marker({
+          position: origin,
+          map: map
+        });
+      }
+    </script>
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiwVlHz328sqBr8_IquTTl8Uv0qN73jdk&callback=initMap">
+    </script>
+  </body>
+</html>
